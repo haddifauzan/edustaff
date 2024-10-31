@@ -19,7 +19,7 @@ class DeleteExpiredData extends Command
     public function handle()
     {
         // Model yang ingin diperiksa
-        $models = ['App\Models\Kelas', 'App\Models\Jurusan', 'App\Models\Jabatan', 'App\Models\Mapel'];
+        $models = ['App\Models\Kelas', 'App\Models\Jurusan', 'App\Models\Jabatan', 'App\Models\Mapel', 'App\Models\Pegawai', 'App\Models\Prestasi'];
 
         foreach ($models as $model) {
             $expiredData = $model::where('expired_at', '<=', now())->get();

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeAdminController;
 use App\Http\Controllers\HomeOperatorController;
+use App\Http\Controllers\HomePegawaiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\JabatanController;
@@ -13,14 +14,23 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\DeletedDataController;
 use App\Http\Controllers\TugasTambahanController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\KonfirmasiController;
+use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\BantuanController;
 
 use App\Http\Controllers\Laporan\LaporanPegawaiController;
+use App\Http\Controllers\Laporan\LaporanRiwayatController;
+use App\Http\Controllers\Laporan\LaporanTugasController;
+use App\Http\Controllers\Laporan\LaporanPensiunKeluarController;
+use App\Http\Controllers\Laporan\LaporanPrestasiController;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login-submit', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::get('/forgot-password', [AuthController::class, 'create_forgot_password'])
     ->name('password.request');
 
@@ -33,8 +43,8 @@ Route::get('/reset-password/{token}', [AuthController::class, 'create_reset_pass
 Route::post('/reset-password', [AuthController::class, 'store_reset_password'])
     ->name('password.update');
 
-
-Route::middleware(['auth:admin'])->group(function () {
+// ADMIN
+Route::group(['middleware' => 'auth:admin'], function () {
     // ADMIN MENU
     Route::get('/admin-dashboard', [HomeAdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/update-profile-admin', [UserController::class, 'updateProfile'])->name('profile.update.admin');
@@ -79,7 +89,6 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('admin/kelas/update/{id}', [KelasController::class, 'update'])->name('admin.kelas.update');
     Route::delete('admin/kelas/delete/{id}', [KelasController::class, 'destroy'])->name('admin.kelas.destroy');
 
-
     //SAMPAH MENU
     Route::get('admin/deleted/{modelType}', [DeletedDataController::class, 'deleted_admin'])
     ->name('admin.deleted')
@@ -87,15 +96,33 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('admin/deleted/{modelType}/{id}/restore', [DeletedDataController::class, 'restore'])->name('deleted.restore');
     Route::delete('admin/deleted/{modelType}/{id}/force-delete', [DeletedDataController::class, 'forceDelete'])->name('deleted.forceDelete');
 
-
     // MENU LAPORAN
-    Route::get('admin/laporan/pegawai', [LaporanPegawaiController::class, 'index'])->name('laporan.pegawai');
-    Route::get('/laporan/pegawai/pdf', [LaporanPegawaiController::class, 'downloadPDF'])->name('laporan.pegawai.pdf');
-    Route::get('/laporan/pegawai/{id}/pdf', [LaporanPegawaiController::class, 'downloadPegawaiDetailPDF'])->name('laporan.pegawai-detail.pdf');
+    Route::get('admin/laporan/pegawai', [LaporanPegawaiController::class, 'index'])->name('admin.laporan.pegawai');
+    Route::get('admin/laporan/pegawai/pdf', [LaporanPegawaiController::class, 'downloadPDF'])->name('admin.laporan.pegawai.pdf');
+    Route::get('admin/laporan/pegawai/{id}/pdf', [LaporanPegawaiController::class, 'downloadPegawaiDetailPDF'])->name('admin.laporan.pegawai-detail.pdf');
+
+    Route::get('admin/laporan/riwayat-jabatan', [LaporanRiwayatController::class, 'index'])->name('admin.laporan.riwayat-jabatan');
+    Route::get('admin/laporan/riwayat-jabatan/pdf', [LaporanRiwayatController::class, 'downloadPDF'])->name('admin.laporan.riwayat-jabatan.pdf');
+
+    Route::get('admin/laporan/tugas-tambahan', [LaporanTugasController::class, 'index'])->name('admin.laporan.tugas-tambahan');
+    Route::get('admin/laporan/tugas-tambahan/pdf', [LaporanTugasController::class, 'downloadPDF'])->name('admin.laporan.tugas-tambahan.pdf');
+
+    Route::get('admin/laporan/pensiun-keluar', [LaporanPensiunKeluarController::class, 'index'])->name('admin.laporan.pensiun-keluar');
+    Route::get('admin/laporan/pensiun-keluar/pdf', [LaporanPensiunKeluarController::class, 'downloadPDF'])->name('admin.laporan.pensiun-keluar.pdf');
  
+    Route::get('admin/laporan/prestasi', [LaporanPrestasiController::class, 'index'])->name('admin.laporan.prestasi');
+    Route::get('admin/laporan/prestasi/pdf', [LaporanPrestasiController::class, 'downloadPDF'])->name('admin.laporan.prestasi.pdf');
+    Route::get('admin/laporan/prestasi/{id}/pdf', [LaporanPrestasiController::class, 'prestasiDetailPdf'])->name('admin.laporan.prestasi-detail.pdf');
+
+    // NOTIFIKASI
+    Route::get('/admin-notifikasi/{id}', [NotifikasiController::class, 'index'])->name('notifikasi.admin');
+
+    // LOG AKTIVITAS
+    Route::get('admin/log-aktivitas', [LogController::class, 'index'])->name('admin.log');
 });
 
-Route::middleware(['auth:operator'])->group(function () {
+// OPERATOR
+Route::group(['middleware' => 'auth:operator'], function () {
     Route::get('/operator-dashboard', [HomeOperatorController::class, 'index'])->name('operator.dashboard');
     Route::post('/update-profile-operator', [UserController::class, 'updateProfile'])->name('profile.update.operator');
 
@@ -134,6 +161,23 @@ Route::middleware(['auth:operator'])->group(function () {
     Route::get('operator/kepala-jurusan', [JurusanController::class, 'index_operator'])->name('operator.kepala_jurusan.pegawai');
     Route::post('operator/jurusan/{id}/update-kepala-jurusan', [JurusanController::class, 'updateKepalaJurusan'])->name('operator.jurusan.updateKepalaJurusan');
 
+    // PENGAJUAN PERUBAHAN DATA
+    Route::get('/operator/perubahan', [KonfirmasiController::class, 'daftarPengajuan'])->name('operator.perubahan');
+    Route::put('/operator/perubahan/setuju/{id}', [KonfirmasiController::class, 'setujuiPengajuan'])->name('operator.perubahan.setuju');
+    Route::put('/operator/perubahan/tolak/{id}', [KonfirmasiController::class, 'tolakPengajuan'])->name('operator.perubahan.tolak');
+    Route::get('/operator/perubahan/{id}/detail', [KonfirmasiController::class, 'detailPengajuan'])->name('operator.perubahan.detail');
+
+    // PENGAJUAN PRESTASI PEGAWAI
+    Route::get('/operator/prestasi', [PrestasiController::class, 'daftarPrestasi'])->name('operator.prestasi');
+    Route::put('/operator/prestasi/setuju/{id}', [PrestasiController::class, 'setujuiPrestasi'])->name('operator.prestasi.setuju');
+    Route::put('/operator/prestasi/tolak/{id}', [PrestasiController::class, 'tolakPrestasi'])->name('operator.prestasi.tolak');
+    Route::delete('/operator/prestasi/{id}/hapus', [PrestasiController::class, 'hapusPrestasi'])->name('operator.prestasi.destroy');
+
+    // PENGAJUAN PENSIUN/KELUAR
+    Route::get('/operator/pengajuan', [PengajuanController::class, 'daftarPengajuan'])->name('operator.pengajuan');
+    Route::post('/operator/pengajuan', [PengajuanController::class, 'storeOperator'])->name('operator.pengajuan.store');
+    Route::post('/operator/pengajuan/{id}/approve', [PengajuanController::class, 'approve'])->name('operator.pengajuan.approve');
+    Route::post('/operator/pengajuan/{id}/reject', [PengajuanController::class, 'reject'])->name('operator.pengajuan.reject');
 
     // SAMPAH MENU
     Route::get('operator/deleted/{modelType}', [DeletedDataController::class, 'deleted_operator'])
@@ -141,6 +185,50 @@ Route::middleware(['auth:operator'])->group(function () {
     ->where('modelType', '^(pegawai|prestasi)$'); 
     Route::post('operator/deleted/{modelType}/{id}/restore', [DeletedDataController::class, 'restore'])->name('operator.deleted.restore');
     Route::delete('operator/deleted/{modelType}/{id}/force-delete', [DeletedDataController::class, 'forceDelete'])->name('operator.deleted.forceDelete');
+
+    // NOTIFIKASI
+    Route::get('/operator-notifikasi/{id}', [NotifikasiController::class, 'index'])->name('notifikasi.operator');
+
+    // BANTUAN
+    Route::get('operator/bantuan', [BantuanController::class, 'index_operator'])->name('operator.bantuan');
+    Route::post('operator/bantuan-store', [BantuanController::class, 'store'])->name('bantuan.store.operator');
 });
 
+// PEGAWAI
+Route::group(['middleware' => 'auth:pegawai'], function () {
+    Route::get('/pegawai-dashboard', [HomePegawaiController::class, 'index'])->name('pegawai.dashboard');
+    Route::get('/pegawai-profile', [HomePegawaiController::class, 'profile'])->name('pegawai.profile');
+    Route::post('/update-profile-pegawai', [UserController::class, 'updateProfile'])->name('profile.update.pegawai');
 
+    // PERUBAHAN DATA
+    Route::get('/pegawai/edit', [KonfirmasiController::class, 'editDataDiri'])->name('pegawai.perubahan');
+    Route::post('/pegawai/update', [KonfirmasiController::class, 'updateDataDiri'])->name('pegawai.updateDataDiri');
+    Route::delete('/pengajuan/{id}/batalkan', [KonfirmasiController::class, 'batalkanPengajuan'])->name('batalkanPengajuan');
+
+    // PRESTASI PEGAWAI
+    Route::get('/pegawai/prestasi', [PrestasiController::class, 'index'])->name('pegawai.prestasi');
+    Route::post('/pegawai/prestasi/store', [PrestasiController::class, 'store'])->name('pegawai.prestasi.store');
+    Route::post('/pegawai/prestasi/update/{id}', [PrestasiController::class, 'update'])->name('pegawai.prestasi.update');
+    Route::delete('/pegawai/prestasi/delete/{id}', [PrestasiController::class, 'destroy'])->name('pegawai.prestasi.destroy');
+    Route::get('/pegawai/prestasi/{id}/show', [PrestasiController::class, 'show'])->name('pegawai.prestasi.show');
+
+    // PENGAJUAN PENSIUN/KELUAR
+    Route::get('/pegawai/pengajuan', [PengajuanController::class, 'index'])->name('pegawai.pengajuan');
+    Route::post('/pegawai/pengajuan/store', [PengajuanController::class, 'store'])->name('pegawai.pengajuan.store');
+    Route::put('/pegawai/pengajuan/update/{id}', [PengajuanController::class, 'update'])->name('pegawai.pengajuan.update');
+    Route::delete('/pegawai/pengajuan/delete/{id}', [PengajuanController::class, 'destroy'])->name('pegawai.pengajuan.destroy');
+    
+    // NOTIFIKASI
+    Route::get('/pegawai-notifikasi/{id}', [NotifikasiController::class, 'index'])->name('notifikasi.pegawai');
+
+    // BANTUAN
+    Route::get('pegawai/bantuan', [BantuanController::class, 'index_pegawai'])->name('pegawai.bantuan');
+    Route::post('pegawai/bantuan-store', [BantuanController::class, 'store'])->name('bantuan.store');
+});
+
+Route::group(['middleware' => ['auth:pegawai,operator,admin']], function () {
+    Route::post('/notifikasi/mark-all-read', [NotifikasiController::class, 'markAllAsRead'])->name('notifikasi.markAllAsRead');
+    Route::delete('/notifikasi/delete-all', [NotifikasiController::class, 'deleteAll'])->name('notifikasi.destroyAll');
+    Route::post('/notifikasi/{id}/mark-as-read', [NotifikasiController::class, 'markAsRead'])->name('notifikasi.read');
+    Route::delete('/notifikasi/{id}/delete', [NotifikasiController::class, 'destroy'])->name('notifikasi.destroy');
+});

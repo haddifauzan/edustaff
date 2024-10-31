@@ -11,7 +11,7 @@
     <!-- Card untuk filter dan tombol download -->
     <div class="card mb-4">
         <div class="card-body">
-            <form action="{{ route('laporan.pegawai') }}" method="GET" class="row g-3">
+            <form action="{{ route('admin.laporan.pegawai') }}" method="GET" class="row g-3">
                 <!-- Input Pencarian -->
                 <div class="col-md-4">
                     <label for="search" class="form-label">Cari Pegawai</label>
@@ -103,10 +103,10 @@
                 <!-- Tombol Action -->
                 <div class="col-12 text-end mt-3">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-filter me-2"></i>Filter</button>
-                    <a href="{{ route('laporan.pegawai') }}" type="reset" class="btn btn-secondary"><i class="fa fa-undo me-2"></i>Reset</a>
-                    <button type="button" class="btn btn-danger" id="pdfButton" onclick="downloadFile('{{ route('laporan.pegawai.pdf') . '?' . http_build_query(request()->all()) }}', 'pdf')">
+                    <a href="{{ route('admin.laporan.pegawai') }}" type="reset" class="btn btn-secondary"><i class="fa fa-undo me-2"></i>Reset</a>
+                    <button type="button" class="btn btn-danger" onclick="window.open('{{ route('admin.laporan.pegawai.pdf') . '?' . http_build_query(request()->all()) }}', '_blank')">
                         <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                        <i class="fa fa-file-pdf me-2"></i><span class="button-text">Download PDF</span>
+                        <i class="fa fa-file-pdf me-2"></i><span class="button-text">Cetak Dokumen</span>
                     </button>
                 </div>
             </form>
@@ -141,6 +141,18 @@
                             @if(isset($activeFilters['jenis_kelamin']))
                                 <th>Jenis Kelamin</th>
                             @endif
+                            <!-- Cek apakah filter 'status_pernikahan' aktif -->
+                            @if(isset($activeFilters['status_pernikahan']))
+                                <th>Status Pernikahan</th>
+                            @endif
+                            <!-- Cek apakah filter 'status_pegawai' aktif -->   
+                            @if(isset($activeFilters['status_pegawai']))
+                                <th>Status Pegawai</th>
+                            @endif
+                            <!-- Cek apakah filter 'status_kepegawaian' aktif -->
+                            @if(isset($activeFilters['status_kepegawaian']))
+                                <th>Status Kepegawaian</th>
+                            @endif
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -157,7 +169,6 @@
                             @if(isset($activeFilters['tahun_ajaran']))
                                 <td>{{ \Carbon\Carbon::parse($pgw->created_at)->format('Y') . '-' . (\Carbon\Carbon::parse($pgw->created_at)->addYear()->format('Y')) }}</td>
                             @endif
-
                             <!-- Jika filter 'agama' aktif -->
                             @if(isset($activeFilters['agama']))
                                 <td>{{ $pgw->agama }}</td>
@@ -166,8 +177,20 @@
                             @if(isset($activeFilters['jenis_kelamin']))
                                 <td>{{ $pgw->jenis_kelamin }}</td>
                             @endif
+                            <!-- Jika filter 'status_pernikahan' aktif -->
+                            @if(isset($activeFilters['status_pernikahan']))
+                                <td>{{ $pgw->status_pernikahan }}</td>
+                            @endif
+                            <!-- Jika filter 'status_pegawai' aktif -->   
+                            @if(isset($activeFilters['status_pegawai']))
+                                <td>{{ $pgw->status_pegawai }}</td>
+                            @endif
+                            <!-- Jika filter 'status_kepegawaian' aktif -->
+                            @if(isset($activeFilters['status_kepegawaian']))
+                                <td>{{ $pgw->status_kepegawaian }}</td>
+                            @endif
                             <td>
-                                <a href="{{route('laporan.pegawai-detail.pdf', $pgw->id_pegawai)}}" class="btn btn-sm btn-danger">
+                                <a href="{{route('admin.laporan.pegawai-detail.pdf', $pgw->id_pegawai)}}" target="_blank" class="btn btn-sm btn-danger">
                                     <i class="fa fa-file-pdf me-2"></i>PDF
                                 </a>
                             </td>

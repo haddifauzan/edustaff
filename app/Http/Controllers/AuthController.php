@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use App\Models\Notifikasi;
 
 class AuthController extends Controller
 {
@@ -41,14 +42,23 @@ class AuthController extends Controller
 
         // Cek akun
         if (Auth::guard($guard)->attempt($credentials, $request->has('remember-me'))) {
-            $user->last_login = now();
-            $user->save();
 
             // Cek status akun
             if ($user->status_akun !== 'Aktif') {
                 Auth::guard($guard)->logout();
                 return redirect()->route('login')->with('error', 'Status akun anda Non-Aktif. Silahkan laporkan masalah.');
             }
+
+            if ($guard === 'pegawai' && is_null($user->last_login)) {
+                Notifikasi::create([
+                    'id_user' => $user->id_user,
+                    'pesan' => 'Selamat datang di Aplikasi EduStaff! Kami senang Anda bergabung dengan kami. Jangan ragu untuk menghubungi kami jika Anda memiliki pertanyaan atau perlu bantuan.',
+                    'judul' => 'Selamat Datang di EduStaff!!'
+                ]);
+            }
+
+            $user->last_login = now();
+            $user->save();
 
             // Redirect ke dashboard yang sesuai dengan guard
             return redirect()->route($guard . '.dashboard')->with('success', 'Login berhasil!');

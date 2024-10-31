@@ -93,35 +93,35 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">KELOLA LAPORAN</span>
             </li>
-            <li class="menu-item {{ request()->routeIs('laporan.*') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('admin.laporan.*') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-clipboard"></i>
                 <div data-i18n="Data Laporan">Data Laporan</div>
               </a>
 
               <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('laporan.pegawai') ? 'active open' : '' }}">
-                  <a href="{{route('laporan.pegawai')}}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.laporan.pegawai*') ? 'active open' : '' }}">
+                  <a href="{{route('admin.laporan.pegawai')}}" class="menu-link">
                     <div data-i18n="Laporan Pegawai">Laporan Pegawai</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.laporan.riwayat-jabatan*') ? 'active open' : '' }}">
+                  <a href="{{route('admin.laporan.riwayat-jabatan')}}" class="menu-link">
                     <div data-i18n="Laporan Riwayat Jabatan">Laporan Riwayat Jabatan</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.laporan.tugas-tambahan*') ? 'active open' : '' }}">
+                  <a href="{{route('admin.laporan.tugas-tambahan')}}" class="menu-link">
                     <div data-i18n="Laporan Tugas Tambahan">Laporan Tugas Tambahan</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.laporan.pensiun-keluar*') ? 'active open' : '' }}">
+                  <a href="{{route('admin.laporan.pensiun-keluar')}}" class="menu-link">
                     <div data-i18n="Laporan Pensiun/Keluar ">Laporan Pensiun/Keluar</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.laporan.prestasi*') ? 'active open' : '' }}">
+                  <a href="{{route('admin.laporan.prestasi')}}" class="menu-link">
                     <div data-i18n="Laporan Prestasi Pegawai">Laporan Prestasi Pegawai</div>
                   </a>
                 </li>
@@ -158,16 +158,10 @@
                 </li>
               </ul>
             </li>   
-            <li class="menu-item ">
-              <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cog"></i>
-                <div data-i18n="Pengaturan Aplikasi">Pengaturan Aplikasi</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-help-circle"></i>
-                <div data-i18n="Bantuan">Bantuan</div>
+            <li class="menu-item {{ request()->routeIs('admin.log') ? 'active open' : '' }}">
+              <a href="{{route('admin.log')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-history"></i>
+                <div data-i18n="Log Aktivitas">Log Aktivitas</div>
               </a>
             </li>         
           </ul>

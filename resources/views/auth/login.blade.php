@@ -157,13 +157,6 @@
                     <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
                   </div>
                 </form>
-            
-                <p class="text-center">
-                  <span>Tidak bisa masuk?</span>
-                  <a href="#">
-                    <span>Laporkan masalah</span>
-                  </a>
-                </p>
               </div>
             </div>            
             <!-- /Register -->

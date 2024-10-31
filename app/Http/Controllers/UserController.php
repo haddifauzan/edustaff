@@ -54,7 +54,7 @@ class UserController extends Controller
             'email' => 'required|email|max:255',
             'no_hp' => 'required|string|max:15',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
-            'current_password' => 'required_with:new_password|string|min:6', // Validasi password saat ini
+            'current_password' => 'nullable|required_with:new_password|string|min:6', // Validasi password saat ini
             'new_password' => 'nullable|string|min:6|confirmed', // Validasi password baru
         ]);
 
@@ -100,6 +100,15 @@ class UserController extends Controller
                 $imageName = time() . '.' . $request->file('foto_profil')->extension();
                 $request->file('foto_profil')->move(public_path('foto_profil'), $imageName);
                 $user->foto_profil = $imageName; // Update dengan nama gambar baru
+
+                // Jika user pegawai, maka ubah juga foto_pegawai di Pegawai
+                if ($user->role === 'Pegawai') {
+                    $pegawai = $user->pegawai;
+                    $fileName = 'foto_pegawai_' . time() . '.' . $request->file('foto_pegawai')->getClientOriginalExtension();
+                    $request->file('foto_pegawai')->move(public_path('foto_profil'), $fileName);
+                    $pegawai->foto_pegawai = $fileName;
+                    $pegawai->save();
+                }
             } catch (\Exception $e) {
                 \Log::error($e->getMessage());
             }
@@ -110,6 +119,15 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        // Jika user pegawai, maka ubah juga nama, email, no_hp di Pegawai
+        if ($user->role === 'Pegawai') {
+            $pegawai = $user->pegawai;
+            $pegawai->nama_pegawai = $request->input('nama_user');
+            $pegawai->email = $request->input('email');
+            $pegawai->no_tlp = $request->input('no_hp');
+            $pegawai->save();
+        }
 
         return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
     }

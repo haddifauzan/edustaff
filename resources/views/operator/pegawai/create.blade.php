@@ -184,44 +184,39 @@
                     <div class="col-md-6 mt-3">
                         <div class="form-group">
                             <label for="gelar_belakang">Gelar Belakang</label>
-                            <select name="gelar_belakang" class="form-select" value="{{ old('gelar_belakang') }}">
+                            <select name="gelar_belakang" class="form-select">
                                 <option value="">Pilih Gelar Belakang</option>
-                                <!-- Gelar Sarjana -->
-                                <option value="S.Pd">S.Pd (Sarjana Pendidikan)</option>
-                                <option value="S.Psi">S.Psi (Sarjana Psikologi)</option>
-                                <option value="S.Kom">S.Kom (Sarjana Komputer)</option>
-                                <option value="S.T">S.T (Sarjana Teknik)</option>
-                                <option value="S.E">S.E (Sarjana Ekonomi)</option>
-                                <option value="S.Si">S.Si (Sarjana Sains)</option>
-                                <option value="S.H">S.H (Sarjana Hukum)</option>
-                                <option value="S.Farm">S.Farm (Sarjana Farmasi)</option>
-                                <option value="S.Ked">S.Ked (Sarjana Kedokteran)</option>
-                                <option value="S.Sos">S.Sos (Sarjana Sosial)</option>
-                                <option value="S.Sn">S.Sn (Sarjana Seni)</option>
-                            
-                                <!-- Gelar Pasca-Sarjana -->
-                                <option value="M.Pd">M.Pd (Magister Pendidikan)</option>
-                                <option value="M.Psi">M.Psi (Magister Psikologi)</option>
-                                <option value="M.Kom">M.Kom (Magister Komputer)</option>
-                                <option value="M.E">M.E (Magister Ekonomi)</option>
-                                <option value="M.T">M.T (Magister Teknik)</option>
-                                <option value="M.Si">M.Si (Magister Sains)</option>
-                                <option value="M.H">M.H (Magister Hukum)</option>
-                                <option value="M.Farm">M.Farm (Magister Farmasi)</option>
-                                <option value="M.Ked">M.Ked (Magister Kedokteran)</option>
-                                <option value="M.Sos">M.Sos (Magister Sosial)</option>
-                                <option value="M.Sn">M.Sn (Magister Seni)</option>
-                            
-                                <!-- Gelar Lainnya -->
-                                <option value="Lainnya">Lainnya</option>
+                                <option value="S.Pd" {{ old('gelar_belakang') === 'S.Pd' ? 'selected' : '' }}>S.Pd (Sarjana Pendidikan)</option>
+                                <option value="S.Psi" {{ old('gelar_belakang') === 'S.Psi' ? 'selected' : '' }}>S.Psi (Sarjana Psikologi)</option>
+                                <option value="S.Kom" {{ old('gelar_belakang') === 'S.Kom' ? 'selected' : '' }}>S.Kom (Sarjana Komputer)</option>
+                                <option value="S.T" {{ old('gelar_belakang') === 'S.T' ? 'selected' : '' }}>S.T (Sarjana Teknik)</option>
+                                <option value="S.E" {{ old('gelar_belakang') === 'S.E' ? 'selected' : '' }}>S.E (Sarjana Ekonomi)</option>
+                                <option value="S.Si" {{ old('gelar_belakang')  === 'S.Si' ? 'selected' : '' }}>S.Si (Sarjana Sains)</option>
+                                <option value="S.H" {{ old('gelar_belakang') === 'S.H' ? 'selected' : '' }}>S.H (Sarjana Hukum)</option>
+                                <option value="S.Farm" {{ old('gelar_belakang') === 'S.Farm' ? 'selected' : '' }}>S.Farm (Sarjana Farmasi)</option>
+                                <option value="S.Ked" {{ old('gelar_belakang') === 'S.Ked' ? 'selected' : '' }}>S.Ked (Sarjana Kedokteran)</option>
+                                <option value="S.Sos" {{ old('gelar_belakang') === 'S.Sos' ? 'selected' : '' }}>S.Sos (Sarjana Sosial)</option>
+                                <option value="S.Sn" {{ old('gelar_belakang') === 'S.Sn' ? 'selected' : '' }}>S.Sn (Sarjana Seni)</option>
+                                <option value="M.Pd" {{ old('gelar_belakang') === 'M.Pd' ? 'selected' : '' }}>M.Pd (Magister Pendidikan)</option>
+                                <option value="M.Psi" {{ old('gelar_belakang') === 'M.Psi' ? 'selected' : '' }}>M.Psi (Magister Psikologi)</option>
+                                <option value="M.Kom" {{ old('gelar_belakang') === 'M.Kom' ? 'selected' : '' }}>M.Kom (Magister Komputer)</option>
+                                <option value="M.E" {{ old('gelar_belakang') === 'M.E' ? 'selected' : '' }}>M.E (Magister Ekonomi)</option>
+                                <option value="M.T" {{ old('gelar_belakang') === 'M.T' ? 'selected' : '' }}>M.T (Magister Teknik)</option>
+                                <option value="M.Si" {{ old('gelar_belakang')  === 'M.Si' ? 'selected' : '' }}>M.Si (Magister Sains)</option>
+                                <option value="M.H" {{ old('gelar_belakang') === 'M.H' ? 'selected' : '' }}>M.H (Magister Hukum)</option>
+                                <option value="M.Farm" {{ old('gelar_belakang') === 'M.Farm' ? 'selected' : '' }}>M.Farm (Magister Farmasi)</option>
+                                <option value="M.Ked" {{ old('gelar_belakang') === 'M.Ked' ? 'selected' : '' }}>M.Ked (Magister Kedokteran)</option>
+                                <option value="M.Sos" {{ old('gelar_belakang') === 'M.Sos' ? 'selected' : '' }}>M.Sos (Magister Sosial)</option>
+                                <option value="M.Sn" {{ old('gelar_belakang') === 'M.Sn' ? 'selected' : '' }}>M.Sn (Magister Seni)</option>
+                                <option value="Lainnya" {{ old('gelar_belakang') === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                             </select>
-                            <input type="text" name="gelar_belakang" class="form-control mt-2" maxlength="50" placeholder="Masukkan Gelar Belakang lainnya" style="display: none;" value="{{ old('gelar_belakang') }}">
+                            <input type="text" name="gelar_belakang_lainnya" class="form-control mt-2" maxlength="50" placeholder="Masukkan Gelar Belakang lainnya" style="{{ old('gelar_belakang') === 'Lainnya' ? 'display: block;' : 'display: none;' }}" value="{{ old('gelar_belakang_lainnya') }}">
                             <script>
                                 document.querySelector('[name="gelar_belakang"]').addEventListener('change', function() {
                                     if (this.value === 'Lainnya') {
-                                        document.querySelector('[name="gelar_belakang"]').style.display = 'block';
+                                        document.querySelector('[name="gelar_belakang_lainnya"]').style.display = 'block';
                                     } else {
-                                        document.querySelector('[name="gelar_belakang"]').style.display = 'none';
+                                        document.querySelector('[name="gelar_belakang_lainnya"]').style.display = 'none';
                                     }
                                 });
                             </script>

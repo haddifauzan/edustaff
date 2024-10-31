@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-md-3 mt-1"></div>
                 <div class="col-md-5 mt-1">
-                    <form action="{{ route('admin.user') }}" method="GET">
+                    <form action="{{ route('admin.pegawai') }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Cari Nama atau Email..." value="{{ request('search') }}">
                             <button class="btn btn-secondary" type="submit"><i class="bx bx-search"></i></button>
@@ -33,7 +33,7 @@
                     </form>
                 </div>
                 <div class="col-md-1 mt-1">
-                    <form action="{{ route('admin.user') }}" method="GET"> 
+                    <form action="{{ route('admin.pegawai') }}" method="GET"> 
                         <button type="submit" class="btn btn-danger w-100"><i class="bx bx-refresh"></i></button>
                     </form>
                 </div>

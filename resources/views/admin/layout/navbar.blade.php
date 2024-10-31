@@ -33,49 +33,44 @@
             <!-- Notification Bell with Badge -->
             <a class="nav-link py-0 position-relative" href="javascript:void(0)" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bx bx-bell bx-sm"></i>
-              <span class="badge bg-danger rounded-pill badge-notifications badge-xxs position-absolute top-0 start-100 translate-middle">2</span>
+              <span class="badge bg-danger rounded-pill badge-notifications badge-xxs position-absolute top-0 start-100 translate-middle">{{ $notifications->count() }}</span>
             </a>
             
             <!-- Dropdown Menu for Notifications -->
-            <div class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="notificationDropdown" style="min-width: 330px; max-width: 100%; position: absolute; right: 0; left: auto;">
-              <!-- Header -->
-              <div class="dropdown-header d-flex align-items-center justify-content-between">
-                <h6 class="dropdown-header-title text-truncate me-2">Notifications</h6>
-                <a href="javascript:void(0)" class="fw-bold">Mark all as read</a>
-              </div>
-              
-              <!-- Scrollable Content -->
-              <div class="dropdown-scroll" style="max-height: 300px;">
-                <!-- Notification Item -->
-                <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center py-2">
-                  <div class="avatar avatar-online me-3">
-                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
-                  </div>
-                  <div class="notification-content">
-                    <h6 class="notification-title mb-1">Congratulations!</h6>
-                    <p class="notification-message mb-0">Your account has been created.</p>
-                    <small class="text-muted">5 mins ago</small>
-                  </div>
-                </a>
-          
-                <!-- Another Notification Item -->
-                <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center py-2">
-                  <div class="avatar avatar-offline me-3">
-                    <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
-                  </div>
-                  <div class="notification-content">
-                    <h6 class="notification-title mb-1">Welcome!</h6>
-                    <p class="notification-message mb-0">Your account has been activated.</p>
-                    <small class="text-muted">10 mins ago</small>
-                  </div>
-                </a>
-              </div>
-          
-              <!-- Footer -->
-              <div class="dropdown-footer d-flex align-items-center justify-content-center">
-                <a href="javascript:void(0)" class="fw-bold my-2">View all notifications</a>
-              </div>
-            </div>
+              <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="notificationDropdown" style="min-width: 330px; max-width: 100%; position: absolute; right: 0; left: auto;">
+                <!-- Header -->
+                <div class="dropdown-header d-flex align-items-center justify-content-between">
+                    <h6 class="dropdown-header-title text-truncate me-2">Notifications</h6>
+                    <a href="javascript:void(0)" class="btn btn-link fw-bold p-0 m-0" id="confirmMarkAllBtn">Mark all as read</a>
+                </div>
+                
+                <!-- Scrollable Content -->
+                <div class="dropdown-scroll" style="max-height: 300px;">
+                    @forelse($notifications as $notification)
+                    <a href="javascript:void(0)" class="dropdown-item d-flex align-items-center py-2" data-bs-toggle="modal" data-bs-target="#detailNotifikasi_{{ $notification->id_notifikasi }}">
+                        <div class="avatar me-3">
+                            @if (isset($notification->id_sender))
+                                <img src="{{ asset('foto_profil/' . \App\Models\User::find($notification->id_sender)->foto_profil) }}" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
+                            @else
+                                <img src="{{ asset('images/foto_profil/default.png') }}" alt="Avatar" class="w-px-40 h-auto rounded-circle" />
+                            @endif
+                        </div>
+                        <div class="notification-content">
+                            <h6 class="notification-title mb-1">{{ Str::limit($notification->judul, 20) }}</h6>
+                            <p class="notification-message mb-0">{{ Str::limit($notification->pesan, 30) }}</p>
+                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                        </div>
+                    </a>
+                    @empty
+                    <p class="text-center text-muted">No unread notifications</p>
+                    @endforelse
+                </div>
+
+                <!-- Footer -->
+                <div class="dropdown-footer d-flex align-items-center justify-content-center">
+                    <a href="{{ route('notifikasi.admin', auth()->user()->id_user) }}" class="fw-bold my-2">View all notifications</a>
+                </div>
+            </ul>
           </li>          
           
 
@@ -225,6 +220,35 @@
       </div>
     </div>
 
+        <!-- Modal untuk Detail Notifikasi -->
+        @foreach($notifications as $notification)
+        <div class="modal fade" id="detailNotifikasi_{{ $notification->id_notifikasi }}" tabindex="-1" aria-labelledby="detailNotifikasi_{{ $notification->id_notifikasi }}" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel{{ $notification->id_notifikasi }}">{{ $notification->judul }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <p>{{ $notification->pesan }}</p>
+                      <small class="text-muted">Dari: {{ $notification->sender ? $notification->sender->nama_user : 'Sistem' }}</small><br>
+                      <small class="text-muted">Waktu: {{ $notification->created_at }}</small><br>
+                      <span class="badge {{ is_null($notification->read_at) ? 'bg-warning' : 'bg-success' }}">{{ is_null($notification->read_at) ? 'Belum dibaca' : 'Sudah dibaca' }}</span>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                      @if(is_null($notification->read_at))
+                      <button type="button" class="btn btn-primary" onclick="readNotifikasi({{ $notification->id_notifikasi }})">Tandai Dibaca</button>
+                      @endif
+                      @if(!is_null($notification->data))
+                          <a href="{{ $notification->data }}" class="btn btn-success">Lihat Data</a>
+                      @endif
+                  </div>
+              </div>
+          </div>
+      </div>
+      @endforeach
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
           const editProfileBtn = document.getElementById('editProfileBtn');
@@ -308,6 +332,35 @@
                 document.getElementById(id + 'Eye').classList.replace("bx-show", "bx-hide");
             }
         }
+        function readNotifikasi(id) {
+            axios.post("{{ route('notifikasi.read', ':id') }}".replace(':id', id), {
+                _method: 'PATCH',
+                _token: '{{ csrf_token() }}'
+            })
+            .then(response => {
+                if (response.data.success) {
+                    window.location.reload();
+                } else {
+                    alert(response.data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('confirmMarkAllBtn').addEventListener('click', function() {
+            axios.post("{{ route('notifikasi.markAllAsRead') }}", {
+                _method: 'PATCH',
+                _token: '{{ csrf_token() }}'
+            })
+            .then(response => {
+                if (response.data.success) {
+                    window.location.reload();
+                } else {
+                    alert(response.data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     </script>
 
 

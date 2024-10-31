@@ -1,4 +1,3 @@
-<!-- resources/views/admin/pegawai/pdf.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pegawai - {{ $pegawai->nama_pegawai }}</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .content { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        body { font-family: Arial, sans-serif; font-size: 12px; margin: 0; padding: 0; }
+        .header { text-align: center; margin-bottom: 10px; }
+        .content { margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; table-layout: auto; }
+        th, td { border: 1px solid #ddd; padding: 4px; text-align: left; font-size: 12px; }
         th { background-color: #f2f2f2; }
+
+        .kop-surat {
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid black;
+            padding-bottom: 2px;
+        }
+        .kop-surat h1 { font-size: 18px; margin: 0; }
+        .kop-surat h2 { font-size: 16px; margin: 0; }
+        .kop-surat h3 { font-size: 12px; margin: 0; }
+        .kop-surat p { font-size: 10px; margin: 0; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <!-- KOP Surat -->
+    <div class="kop-surat">
+        <h1>Laporan Data Pegawai</h1>
+        <h2>SMK Negeri 1 Cimahi</h2>
+        <h3>Jl. Mahar Martanegara No.48, Utama, Kec. Cimahi Sel., Kota Cimahi, Jawa Barat 40533</h3>
+        <p>Telepon: 022-6629683 | Email: info@smkn1-cmi.sch.id</p>
+    </div>
+    <div class="header text-center">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('foto_profil/' . $pegawai->foto_pegawai))) }}" alt="Foto Pegawai" width="150">
         <h1>Detail Pegawai</h1>
         <h2>{{ $pegawai->gelar_depan . ' ' . $pegawai->nama_pegawai . ' ' . $pegawai->gelar_belakang }}</h2>
     </div>

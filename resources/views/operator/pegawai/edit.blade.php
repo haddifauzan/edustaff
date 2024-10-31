@@ -79,7 +79,6 @@
                         </div>
                     </div>
                 </div>
-              
                 <div class="row mt-5">
                     <h4 class="col-12">Data Tambahan</h4>
                     <div class="col-md-6">
@@ -186,7 +185,7 @@
                                 <option value="S.Kom" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.Kom' ? 'selected' : '' }}>S.Kom (Sarjana Komputer)</option>
                                 <option value="S.T" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.T' ? 'selected' : '' }}>S.T (Sarjana Teknik)</option>
                                 <option value="S.E" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.E' ? 'selected' : '' }}>S.E (Sarjana Ekonomi)</option>
-                                <option value="S.Si" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.Si' ? 'selected' : '' }}>S.Si (Sarjana Sains)</option>
+                                <option value="S.Si" {{ old('gelar_belakang', $pegawai->gelar_belakang)  === 'S.Si' ? 'selected' : '' }}>S.Si (Sarjana Sains)</option>
                                 <option value="S.H" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.H' ? 'selected' : '' }}>S.H (Sarjana Hukum)</option>
                                 <option value="S.Farm" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.Farm' ? 'selected' : '' }}>S.Farm (Sarjana Farmasi)</option>
                                 <option value="S.Ked" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'S.Ked' ? 'selected' : '' }}>S.Ked (Sarjana Kedokteran)</option>
@@ -203,16 +202,15 @@
                                 <option value="M.Ked" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'M.Ked' ? 'selected' : '' }}>M.Ked (Magister Kedokteran)</option>
                                 <option value="M.Sos" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'M.Sos' ? 'selected' : '' }}>M.Sos (Magister Sosial)</option>
                                 <option value="M.Sn" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'M.Sn' ? 'selected' : '' }}>M.Sn (Magister Seni)</option>
-
                                 <option value="Lainnya" {{ old('gelar_belakang', $pegawai->gelar_belakang) === 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                             </select>
-                            <input type="text" name="gelar_belakang" class="form-control mt-2" maxlength="50" placeholder="Masukkan Gelar Belakang lainnya" style="{{ old('gelar_belakang', $pegawai->gelar_belakang) === 'Lainnya' ? 'display: block;' : 'display: none;' }}" value="{{ old('gelar_belakang_lainnya') }}">
+                            <input type="text" name="gelar_belakang_lainnya" class="form-control mt-2" maxlength="50" placeholder="Masukkan Gelar Belakang lainnya" style="{{ old('gelar_belakang', $pegawai->gelar_belakang) === 'Lainnya' ? 'display: block;' : 'display: none;' }}" value="{{ old('gelar_belakang_lainnya') }}">
                             <script>
                                 document.querySelector('[name="gelar_belakang"]').addEventListener('change', function() {
                                     if (this.value === 'Lainnya') {
-                                        document.querySelector('[name="gelar_belakang"]').style.display = 'block';
+                                        document.querySelector('[name="gelar_belakang_lainnya"]').style.display = 'block';
                                     } else {
-                                        document.querySelector('[name="gelar_belakang"]').style.display = 'none';
+                                        document.querySelector('[name="gelar_belakang_lainnya"]').style.display = 'none';
                                     }
                                 });
                             </script>

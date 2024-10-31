@@ -152,6 +152,8 @@ class DeletedDataController extends Controller
                 return \App\Models\Mapel::class;
             case 'pegawai':
                 return \App\Models\Pegawai::class;
+            case 'prestasi':
+                return \App\Models\Prestasi::class;
             default:
                 return null; // Jika tidak ada tipe yang cocok, kembalikan null
         }

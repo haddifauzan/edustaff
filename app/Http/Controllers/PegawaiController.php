@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\File;
 use App\Models\Pegawai;
 use App\Models\User;
 use App\Models\Notifikasi;
+use App\Models\Konfirmasi;
+use Carbon\Carbon;
+
 
 
 class PegawaiController extends Controller
@@ -83,58 +86,47 @@ class PegawaiController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $nik = $request->nik;
-
-        $folderPath = 'uploads/data_gambar_pegawai/' . $nik; // Folder untuk foto profil
+        $request->merge(['gelar_depan' => $request->gelar_depan_lainnya ?: $request->gelar_depan]);
+        $request->merge(['gelar_belakang' => $request->gelar_belakang_lainnya ?: $request->gelar_belakang]);
 
         $pegawai = new Pegawai();
         $pegawai->fill($request->all());
         $pegawai->is_guru = false;
 
+        $nik = $request->nik;
+        $folderPath = 'uploads/data_gambar_pegawai/' . $nik;
         $fotoProfilFolder = 'foto_profil';
 
         if ($request->hasFile('foto_pegawai')) {
-            $fileName = 'foto_pegawai_' . time() . '.' . $request->file('foto_pegawai')->getClientOriginalExtension();
+            $fileName = 'foto_pegawai_' . time() . '.' . $request->file('foto_pegawai')->extension();
             $request->file('foto_pegawai')->move(public_path($fotoProfilFolder), $fileName);
-            $pegawai->foto_pegawai = $fotoProfilFolder . '/' . $fileName;   
+            $pegawai->foto_pegawai = $fileName;
         }
 
         $fotoData = [];
         $uploadFields = ['foto_ijazah', 'foto_ktp', 'foto_kk', 'foto_akte_kelahiran'];
         foreach ($uploadFields as $field) {
             if ($request->hasFile($field)) {
-                $fileName = $field . '_' . time() . '.' . $request->file($field)->extension(); // Nama file unik
-                $request->file($field)->move(public_path($folderPath), $fileName); // Pindahkan file
-                $fotoData[$field] = $folderPath . '/' . $fileName; // Simpan path file ke array $fotoData
+                $fileName = $field . '_' . time() . '.' . $request->file($field)->extension();
+                $request->file($field)->move(public_path($folderPath), $fileName);
+                $fotoData[$field] = $folderPath . '/' . $fileName;
             } else {
-                $fotoData[$field] = null; // Jika tidak ada file, set ke null
+                $fotoData[$field] = null;
             }
         }
 
-        $pegawai->fill($request->all());
-        $pegawai->foto_pegawai = $fotoPegawaiFileName ?? $pegawai->foto_pegawai;
         $pegawai->fill($fotoData);
         $pegawai->save();
+
         $user = User::create([
             'nama_user' => $request->nama_pegawai,
             'email' => $request->email,
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
             'role' => 'Pegawai',
             'status_aktif' => 'Aktif',
             'no_hp' => $request->no_tlp,
-            'foto_profil' => $pegawai->foto_pegawai, 
-            'id_pegawai' => $pegawai->id_pegawai, 
-        ]);
-
-
-        Notifikasi::create([
-            'judul' => 'Selamat Datang!',
-            'pesan' => 'Akun Pegawai anda sudah berhasil dibuat, silahkan untuk mengecek data diri anda dan jika ada kesalahan bisa diperbaiki dan kami akan konfirmasi! Terima Kasih.',
-            'id_user' => $user->id_user, // ID pengguna yang baru dibuat
-            'tanggal_kirim' => now(),
-            'dibaca' => false,
-            'link' => 'pegawai.notifikasi',
-            'semua_pegawai' => false, 
+            'foto_profil' => $pegawai->foto_pegawai,
+            'id_pegawai' => $pegawai->id_pegawai,
         ]);
 
         return redirect()->route('operator.pegawai')->with('success', 'Data pegawai dan pengguna berhasil ditambahkan.');
@@ -211,12 +203,17 @@ class PegawaiController extends Controller
             'pangkat' => 'max:50',
             'golongan' => 'max:50',
             'gelar_depan' => 'nullable|max:50',
+            'gelar_depan_lainnya' => 'nullable|max:50',
             'gelar_belakang' => 'nullable|max:50',
+            'gelar_belakang_lainnya' => 'nullable|max:50',
             'foto_ijazah' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_kk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'foto_akte_kelahiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $request->merge(['gelar_depan' => $request->gelar_depan_lainnya ?: $request->gelar_depan]);
+        $request->merge(['gelar_belakang' => $request->gelar_belakang_lainnya ?: $request->gelar_belakang]);
 
         $pegawai = Pegawai::findOrFail($id_pegawai);
 
@@ -296,6 +293,10 @@ class PegawaiController extends Controller
             'status_akun' => $user->status_akun
         ]);
     }
+
+
+    
+
 
 
 }

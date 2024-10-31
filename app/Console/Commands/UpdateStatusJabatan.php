@@ -31,7 +31,7 @@ class UpdateStatusJabatan extends Command
     public function handle()
     {
         $riwayatJabatans = RiwayatJabatan::whereNotNull('tgl_selesai')
-                                         ->whereDate('tgl_selesai', '<=', Carbon::now())
+                                         ->whereDate('tgl_selesai', '<=', Carbon::today())
                                          ->get();
 
         foreach ($riwayatJabatans as $riwayat) {

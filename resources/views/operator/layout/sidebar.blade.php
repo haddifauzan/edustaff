@@ -74,66 +74,29 @@
             </li>
 
             <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">KELOLA DATA TAMBAHAN</span>
+              <span class="menu-header-text">KELOLA DATA KONFIRMASI</span>
             </li>
             <!-- Kelola Data Master -->
-            <li class="menu-item">
+            <li class="menu-item {{(request()->routeIs('operator.perubahan*', 'operator.prestasi*', 'operator.pengajuan*') ? 'active open' : '')}}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-list-plus"></i>
-                <div data-i18n="Data Tambahan">Data Tambahan</div>
+                <div data-i18n="Data Tambahan">Data Konfirmasi</div>
               </a>
 
               <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
+                <li class="menu-item {{(request()->routeIs('operator.perubahan') ? 'active open' : '')}}">
+                  <a href="{{route('operator.perubahan')}}" class="menu-link">
                     <div data-i18n="Data Jabatan">Perubahan Data Pegawai</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Data Mata Pelajaran">Prestasi Pegawai</div>
+                <li class="menu-item {{(request()->routeIs('operator.prestasi') ? 'active open' : '')}}">
+                  <a href="{{route('operator.prestasi')}}" class="menu-link">
+                    <div data-i18n="Data Prestasi">Prestasi Pegawai</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Data Pangkat">Pengajuan Pensiun/Keluar</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">KELOLA LAPORAN PEGAWAI</span>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-clipboard"></i>
-                <div data-i18n="Data Laporan">Laporan Pegawai</div>
-              </a>
-
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Laporan Pegawai">Laporan Pegawai</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Laporan Riwayat Jabatan">Laporan Riwayat Jabatan</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Laporan Tugas Tambahan">Laporan Tugas Tambahan</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Laporan Pensiun/Keluar ">Laporan Pensiun/Keluar</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link">
-                    <div data-i18n="Laporan Prestasi Pegawai">Laporan Prestasi Pegawai</div>
+                <li class="menu-item {{(request()->routeIs('operator.pengajuan') ? 'active open' : '')}}">
+                  <a href="{{route('operator.pengajuan')}}" class="menu-link">
+                    <div data-i18n="Data Pengajuan">Pengajuan Pensiun/Keluar</div>
                   </a>
                 </li>
               </ul>
@@ -141,10 +104,10 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">MENU LAINNYA</span>
             </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link">
+            <li class="menu-item {{(request()->routeIs('operator.bantuan') ? 'active' : '')}}">
+              <a href="{{route('operator.bantuan')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-help-circle"></i>
-                <div data-i18n="Bantuan">Bantuan Pegawai</div>
+                <div data-i18n="Bantuan">Bantuan</div>
               </a>
             </li>
             <li class="menu-item {{ request()->is('operator/deleted*') ? 'active open' : '' }}">

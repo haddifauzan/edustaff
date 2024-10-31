@@ -46,6 +46,23 @@
     <!-- Helpers -->
     <script src="{{ asset('/assets/vendor/js/helpers.js') }}"></script>
 
+       <!-- FontAwesome 6.2.0 CSS -->
+       <link
+       rel="stylesheet"
+       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+       integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+       crossorigin="anonymous"
+       referrerpolicy="no-referrer"
+     />
+     
+     <!-- (Optional) Use CSS or JS implementation -->
+     <script
+       src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"
+       integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA=="
+       crossorigin="anonymous"
+       referrerpolicy="no-referrer"
+     ></script>
+
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('/assets/js/config.js') }}"></script>
@@ -59,6 +76,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.datatables.net/v/bs5/dt-2.1.7/datatables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/v/bs5/dt-2.1.7/datatables.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
   </head>
 
   <body>
@@ -74,10 +94,14 @@
     <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
-    <!-- endbuild -->
     <!-- Vendors JS -->
+    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+
     <!-- Main JS -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+    <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
 
     <!-- Page JS -->
     <!-- Place this tag in your head or just before your close body tag. -->

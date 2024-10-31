@@ -36,26 +36,25 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'admin' => [
             'driver' => 'session',
-            'provider' => 'admins',
-        ],
-
-        'operator' => [
-            'driver' => 'session',
-            'provider' => 'operators',
+            'provider' => 'users',
+            'cookie' => 'admin_session',
         ],
 
         'pegawai' => [
             'driver' => 'session',
-            'provider' => 'pegawais',
+            'provider' => 'users',
+            'cookie' => 'pegawai_session',
+        ],
+
+        'operator' => [
+            'driver' => 'session',
+            'provider' => 'users',
+            'cookie' => 'operator_session',
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

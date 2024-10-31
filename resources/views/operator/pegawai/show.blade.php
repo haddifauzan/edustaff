@@ -285,33 +285,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nama Jabatan</th>
-                            <th>Tanggal Mulai</th>
-                            <th>Tanggal Selesai</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pegawai->riwayatJabatan as $rj)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $rj->jabatan->nama_jabatan ?? '-' }}</td>
-                                <td>{{ $rj->tgl_mulai ? \Carbon\Carbon::parse($rj->tgl_mulai)->format('d/m/Y') : '-' }}</td>
-                                <td>{{ $rj->tgl_selesai ? \Carbon\Carbon::parse($rj->tgl_selesai)->format('d/m/Y') : '-' }}</td>
-                                <td>
-                                    <!-- Tombol untuk hapus riwayat jabatan -->
-                                    <form action="{{ route('operator.jabatan.deleteRiwayat', $rj->id_riwayat_jabatan) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus riwayat ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
-                                    </form>
-                                </td>
+                                <th>Nama Jabatan</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Tanggal Selesai</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach($pegawai->riwayatJabatan as $rj)
+                                <tr>
+                                    <td>{{ $rj->jabatan->nama_jabatan ?? '-' }}</td>
+                                    <td>{{ $rj->tgl_mulai ? \Carbon\Carbon::parse($rj->tgl_mulai)->format('d/m/Y') : '-' }}</td>
+                                    <td>{{ $rj->tgl_selesai ? \Carbon\Carbon::parse($rj->tgl_selesai)->format('d/m/Y') : '-' }}</td>
+                                    <td>
+                                        <!-- Tombol untuk hapus riwayat jabatan -->
+                                        <form action="{{ route('operator.jabatan.deleteRiwayat', $rj->id_riwayat_jabatan) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus riwayat ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <form action="{{ route('operator.jabatan.deleteAllRiwayat', $pegawai->id_pegawai) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus semua riwayat?');">
