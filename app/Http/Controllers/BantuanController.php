@@ -45,7 +45,7 @@ class BantuanController extends Controller
         $notification = new Notifikasi();
         $notification->judul = "Bantuan Baru dari {$appName} ({$role})";
         $notification->pesan = $request->pesan;
-        $notification->data = "<a href='https://wa.me/{$phoneNumber}' target='_blank'></a>";
+        $notification->data = "https://wa.me/{$phoneNumber}";
         $notification->id_user = User::where('role', 'Admin')->first()->id_user;
         $notification->id_sender = auth()->id();
         $notification->save();

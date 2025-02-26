@@ -61,7 +61,7 @@
                                 <td>{{ $jurusan->nama_jurusan }}</td>
                                 <td>{{ $jurusan->singkatan }}</td>
                                 <td style="max-width: 250px; ">{{ $jurusan->deskripsi_jurusan }}</td>
-                                <td>{{ $jurusan->kepala_jurusan ?? '-' }}</td>
+                                <td>{{ $jurusan->kepalaJurusan->nama_pegawai ?? '-' }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="javascript:void(0)" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditJurusan{{ $jurusan->id_jurusan }}">

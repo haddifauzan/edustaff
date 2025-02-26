@@ -104,12 +104,6 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">MENU LAINNYA</span>
             </li>
-            <li class="menu-item {{(request()->routeIs('operator.bantuan') ? 'active' : '')}}">
-              <a href="{{route('operator.bantuan')}}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-help-circle"></i>
-                <div data-i18n="Bantuan">Bantuan</div>
-              </a>
-            </li>
             <li class="menu-item {{ request()->is('operator/deleted*') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-trash"></i>
@@ -127,6 +121,12 @@
                   </a>
                 </li>
               </ul>
+            </li>
+            <li class="menu-item {{(request()->routeIs('operator.bantuan') ? 'active' : '')}}">
+              <a href="{{route('operator.bantuan')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
+                <div data-i18n="Bantuan">Bantuan</div>
+              </a>
             </li>
           </ul>
         </aside>

@@ -107,9 +107,9 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
-                  <i class="bx bx-cog me-2"></i>
-                  <span class="align-middle">Pengaturan</span>
+                <a class="dropdown-item" href="{{ route('info-aplikasi') }}">
+                  <i class="bx bx-info-circle me-2"></i>
+                  <span class="align-middle">Info Aplikasi</span>
                 </a>
               </li>
               <li>

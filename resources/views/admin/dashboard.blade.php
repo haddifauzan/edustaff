@@ -1,7 +1,6 @@
 @extends('admin.layout.master')
 @section('title', ' - Admin Dashboard')
 
-@push('styles')
 <style>
     .stats-card {
         transition: transform 0.3s ease;
@@ -26,22 +25,14 @@
     .latest-item:hover {
         background-color: rgba(0,0,0,0.02);
     }
-
-    .profile-pic {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
 </style>
-@endpush
 
 @section('content')
     <div class="card mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard Admin EduStaff</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Dashboard Admin EduStaff</h1> 
                     <p class="text-muted mb-0">Welcome back, {{ auth()->user()->nama_user }}</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
@@ -423,7 +414,7 @@
     </div>
 
     <!-- Department Analysis -->
-    <div class="row g-4 mt-4">
+    <div class="row g-4 mt-1">
         <div class="col-12">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-transparent border-0">
@@ -477,7 +468,7 @@
                                         @if(isset($dept['level']))
                                             <span class="badge {{ $level[$dept['level']] }}">Level {{ $dept['level'] }}</span>
                                         @endif
-                                         || 
+                                        |
                                         @if(isset($dept['golongan']))
                                             <span class="badge {{ $golongan[$dept['golongan']] }}">{{ $dept['golongan'] }}</span>
                                         @endif
@@ -523,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
             categories: {!! json_encode(array_keys($chart_weekly_pegawai)) !!},
             labels: {
                 formatter: function(value) {
-                    return new Date(value).toLocaleDateString('id-ID', { month: 'short', year: '2-digit' });
+                    return value;
                 }
             }
         },
@@ -550,6 +541,57 @@ document.addEventListener('DOMContentLoaded', function() {
         labels: {!! json_encode($chart_status_pegawai['labels']->values()) !!},
         colors: ['#00cc41', '#ead800', '#36b9cc', '#f6c23e'],
         legend: { position: 'bottom' },
+        stroke: {
+            width: 5,
+            colors: '#fff',
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return parseInt(val) + '%';
+            }
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true,
+                            offsetY: -5,
+                            fontSize: '1rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '1.8rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                            offsetY: 16,
+                            formatter: function (val) {
+                                return parseInt(val);
+                            }
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            fontSize: '1rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                            formatter: function (w) {
+                                return w.globals.seriesTotals.reduce((a, b) => {
+                                    return a + b
+                                }, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        },
         responsive: [{
             breakpoint: 480,
             options: {
@@ -559,8 +601,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }]
     };
 
-    var statusPegawaiDistributionChart = new ApexCharts(document.querySelector("#statusPegawaiDistributionChart"), statusPegawaiDistributionOptions);
+    // Render Chart
+    var statusPegawaiDistributionChart = new ApexCharts(
+        document.querySelector("#statusPegawaiDistributionChart"), 
+        statusPegawaiDistributionOptions
+    );
     statusPegawaiDistributionChart.render();
+
 
     // Gender Distribution Chart
     var genderChartOptions = {
@@ -573,7 +620,48 @@ document.addEventListener('DOMContentLoaded', function() {
         labels: {!! json_encode($chart_jenis_kelamin['labels']->values()) !!},
         fill: { opacity: 0.8 },
         stroke: { width: 1 },
-        legend: { position: 'bottom' }
+        legend: { position: 'bottom' },
+        plotOptions: {
+            pie: {
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true,
+                            offsetY: -5,
+                            fontSize: '1rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '1.8rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                            offsetY: 16,
+                            formatter: function (val) {
+                                return parseInt(val);
+                            }
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            fontSize: '1rem',
+                            fontFamily: 'Public Sans',
+                            color: '#004ba0',
+                            fontWeight: 'bold',
+                            formatter: function (w) {
+                                return w.globals.seriesTotals.reduce((a, b) => {
+                                    return a + b
+                                }, 0);
+                            }
+                        }
+                    }
+                }
+            }
+        },
     };
 
     var genderChart = new ApexCharts(document.querySelector("#genderChart"), genderChartOptions);

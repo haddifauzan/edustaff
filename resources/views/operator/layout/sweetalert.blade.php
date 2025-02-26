@@ -1,6 +1,5 @@
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        @if (session('success'))
+@if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
                 background: '#ECFFE6',
@@ -54,7 +53,6 @@
                 }
             });
         @endif
-    });
 </script>
 
 <style>

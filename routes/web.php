@@ -20,6 +20,8 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\BantuanController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\InfoAplikasiController;
 
 use App\Http\Controllers\Laporan\LaporanPegawaiController;
 use App\Http\Controllers\Laporan\LaporanRiwayatController;
@@ -119,6 +121,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // LOG AKTIVITAS
     Route::get('admin/log-aktivitas', [LogController::class, 'index'])->name('admin.log');
+
+    // FITUR
+    Route::get('search', [SearchController::class, 'index'])->name('search');
 });
 
 // OPERATOR
@@ -192,6 +197,9 @@ Route::group(['middleware' => 'auth:operator'], function () {
     // BANTUAN
     Route::get('operator/bantuan', [BantuanController::class, 'index_operator'])->name('operator.bantuan');
     Route::post('operator/bantuan-store', [BantuanController::class, 'store'])->name('bantuan.store.operator');
+
+    // FITUR
+    Route::get('/operator/search', [SearchController::class, 'searchOperator'])->name('search.operator');
 });
 
 // PEGAWAI
@@ -231,4 +239,6 @@ Route::group(['middleware' => ['auth:pegawai,operator,admin']], function () {
     Route::delete('/notifikasi/delete-all', [NotifikasiController::class, 'deleteAll'])->name('notifikasi.destroyAll');
     Route::post('/notifikasi/{id}/mark-as-read', [NotifikasiController::class, 'markAsRead'])->name('notifikasi.read');
     Route::delete('/notifikasi/{id}/delete', [NotifikasiController::class, 'destroy'])->name('notifikasi.destroy');
+
+    Route::get('info-aplikasi', [InfoAplikasiController::class, 'index'])->name('info-aplikasi');
 });

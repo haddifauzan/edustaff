@@ -7,6 +7,8 @@ use App\Models\Konfirmasi;
 use App\Models\Pegawai;
 use App\Models\User;
 use App\Models\Notifikasi;
+use App\Http\Controllers\API\NotifikasiController;
+
 
 class KonfirmasiController extends Controller
 {
@@ -276,6 +278,9 @@ class KonfirmasiController extends Controller
         $notifikasiPegawai->id_sender = auth()->user()->id_user;
         $notifikasiPegawai->save();
 
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($pegawai->user->id_user, $notifikasiPegawai->judul, $notifikasiPegawai->pesan);
+
         return redirect()->back()->with('success', 'Pengajuan berhasil disetujui dan data pegawai telah diperbarui.');
     }
 
@@ -312,6 +317,9 @@ class KonfirmasiController extends Controller
         $notifikasiPegawai->id_user = $pegawai->user->id_user;
         $notifikasiPegawai->id_sender = auth()->user()->id_user;
         $notifikasiPegawai->save();
+        
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiPegawai->id_user, $notifikasiPegawai->judul, $notifikasiPegawai->pesan);
 
         // Update status pengajuan dan pesan operator
         $pengajuan->update([

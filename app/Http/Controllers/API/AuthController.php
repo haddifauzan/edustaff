@@ -100,11 +100,13 @@ class AuthController extends Controller
             ], 404);
         }
 
+        $user = User::where('id_pegawai', $pegawai->id_pegawai)->first();
         // Return data pegawai dalam bentuk JSON
         return response()->json([
             'success' => true,
             'message' => 'Data pegawai berhasil diambil.',
             'data' => [
+                'id_user' => $user->id_user,
                 'id_pegawai' => $pegawai->id_pegawai,
                 'nik' => $pegawai->nik,
                 'nama_pegawai' => $pegawai->gelar_depan . ' ' . $pegawai->nama_pegawai . ' ' . $pegawai->gelar_belakang,
@@ -142,6 +144,13 @@ class AuthController extends Controller
                     }),
                     'tugas_tambahan' => $pegawai->tugasTambahan->map(function ($tugas) {
                         return $tugas->nama_tugas;
+                    }),
+                    'riwayat_jabatan' => $pegawai->riwayatJabatan->map(function ($riwayat) {
+                        return [
+                            'nama_jabatan' => $riwayat->jabatan->nama_jabatan,
+                            'tgl_mulai' => $riwayat->tgl_mulai ? date('Y-m-d', strtotime($riwayat->tgl_mulai)) : '-',
+                            'tgl_selesai' => $riwayat->tgl_selesai ? date('Y-m-d', strtotime($riwayat->tgl_selesai)) : '-',
+                        ];
                     }),
                 ] : [
                     'keterangan' => 'Tidak ada data tambahan',

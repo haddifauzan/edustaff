@@ -8,6 +8,8 @@ use App\Models\Pegawai;
 use App\Models\User;
 use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\API\NotifikasiController;
+
 
 class PengajuanController extends Controller
 {
@@ -140,6 +142,9 @@ class PengajuanController extends Controller
         $notifikasiUser->id_user = $pegawai->id_user;
         $notifikasiUser->id_sender = auth()->user()->id_user;
         $notifikasiUser->save();
+        
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiUser->id_user, $notifikasiUser->judul, $notifikasiUser->pesan);
 
         return redirect()->route('operator.pengajuan')->with('success', 'Pengajuan berhasil ditambahkan');
     }
@@ -162,6 +167,9 @@ class PengajuanController extends Controller
         $notifikasiUser->id_sender = auth()->user()->id_user;
         $notifikasiUser->save();
 
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiUser->id_user, $notifikasiUser->judul, $notifikasiUser->pesan);
+
         return redirect()->route('operator.pengajuan')->with('success', 'Pengajuan berhasil disetujui');
     }
 
@@ -183,6 +191,9 @@ class PengajuanController extends Controller
         $notifikasiUser->id_user = $pengajuan->pegawai->user->id_user;
         $notifikasiUser->id_sender = auth()->user()->id_user;
         $notifikasiUser->save();
+
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiUser->id_user, $notifikasiUser->judul, $notifikasiUser->pesan);
 
         return redirect()->route('operator.pengajuan')->with('error', 'Pengajuan telah ditolak');
     }

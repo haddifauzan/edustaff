@@ -1,7 +1,28 @@
 <!-- Layout container -->
 <div class="layout-page">
     <!-- Navbar -->
+    <style>
+      #searchResults {
+          position: absolute;
+          background-color: white;
+          border: 1px solid #ccc;
+          max-height: 300px;
+          overflow-y: auto;
+          width: 50%;
+          display: none;
+          z-index: 1000;
+          padding: 5px;
+      }
 
+      #searchResults div {
+          padding: 5px;
+          cursor: pointer;
+      }
+
+      #searchResults div:hover {
+          background-color: #f0f0f0;
+      }
+    </style>
     <nav
       class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
       id="layout-navbar"
@@ -14,18 +35,20 @@
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Search -->
-        <div class="navbar-nav align-items-center">
-          <div class="nav-item d-flex align-items-center">
-            <i class="bx bx-search fs-4 lh-0"></i>
-            <input
+        <div class="nav-item d-flex align-items-center">
+          <i class="bx bx-search fs-4 lh-0"></i>
+          <input
               type="text"
               class="form-control border-0 shadow-none"
               placeholder="Search..."
               aria-label="Search..."
-            />
-          </div>
-        </div>
-        <!-- /Search -->
+              id="searchInput"
+          />
+      </div>
+      <!-- Dropdown hasil pencarian -->
+      <div id="searchResults" class="dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; width: 40%;">
+          <!-- Hasil pencarian akan dimuat di sini -->
+      </div>
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- Place this tag where you want the button to render. -->
@@ -108,9 +131,9 @@
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="#">
-                  <i class="bx bx-cog me-2"></i>
-                  <span class="align-middle">Pengaturan</span>
+                <a class="dropdown-item" href="{{ route('info-aplikasi') }}">
+                  <i class="bx bx-info-circle me-2"></i>
+                  <span class="align-middle">Info Aplikasi</span>
                 </a>
               </li>
               <li>
@@ -363,6 +386,74 @@
             .catch(error => console.error('Error:', error));
         });
     </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    let query = this.value;
+
+    if (query.length > 1) { // Mulai pencarian setelah 2 karakter
+        axios.get(`{{ route('search.operator') }}?query=${query}`)
+            .then(response => {
+                let data = response.data;
+                let searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = ''; // Kosongkan hasil sebelumnya
+                searchResults.style.display = 'block';
+
+                // Helper function to append results with clickable links
+                function appendResults(title, items, key, route) {
+                    if (items && items.length > 0) {
+                        searchResults.innerHTML += `<div><strong>${title}</strong></div>`;
+                        items.forEach(item => {
+                            searchResults.innerHTML += `<div><a href="javascript:void(0);" onclick="window.location.href='/${route}?search=${item[key]}'">${item[key]}</a></div>`;
+                        });
+                    }
+                }
+
+                // Tampilkan hasil untuk setiap kategori dengan route yang sesuai
+                appendResults("Pegawai", data.pegawais, 'nama_pegawai', 'operator/pegawai');
+                appendResults("Jabatan", data.jabatans, 'nama_jabatan', 'operator/pegawai/jabatan');
+                appendResults("Tugas Tambahan", data.tugastambahans, 'nama_tugas', 'operator/tugas');
+                appendResults("Mata Pelajaran", data.mapels, 'nama_pelajaran', 'operator/guru_mapel');
+                appendResults("Kelas", data.kelas, 'nama_kelas', 'operator/kelas');
+                appendResults("Kepala Jurusan", data.kepalajurusans, 'nama_jurusan', 'operator/kepala-jurusan');
+                appendResults("Pengajuan Perubahan", data.perubahans, 'status', 'operator/perubahan');
+                appendResults("Prestasi", data.prestasis, 'nama_prestasi', 'operator/prestasi');
+                appendResults("Pengajuan", data.pengajuans, 'judul', 'operator/pengajuan');
+
+                // Tampilkan pesan jika tidak ada hasil
+                if (
+                    (!data.pegawais || data.pegawais.length === 0) &&
+                    (!data.jabatans || data.jabatans.length === 0) &&
+                    (!data.tugastambahans || data.tugastambahans.length === 0) &&
+                    (!data.mapels || data.mapels.length === 0) &&
+                    (!data.kelas || data.kelas.length === 0) &&
+                    (!data.kepalajurusans || data.kepalajurusans.length === 0) &&
+                    (!data.perubahans || data.perubahans.length === 0) &&
+                    (!data.prestasis || data.prestasis.length === 0) &&
+                    (!data.pengajuans || data.pengajuans.length === 0)
+                ) {
+                    searchResults.innerHTML = '<div>No results found.</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching search results:', error);
+            });
+    } else {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+
+// Menyembunyikan dropdown saat mengklik di luar elemen pencarian
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.navbar-nav')) {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+</script>
+
+
 
 
 

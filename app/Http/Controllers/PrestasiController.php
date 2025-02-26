@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Prestasi;
 use App\Models\User;
 use App\Models\Notifikasi;
+use App\Http\Controllers\API\NotifikasiController;
+
 
 class PrestasiController extends Controller
 {
@@ -169,6 +171,8 @@ class PrestasiController extends Controller
         $notifikasiPegawai->id_user = $prestasi->pegawai->user->id_user;
         $notifikasiPegawai->id_sender = auth()->user()->id_user;
         $notifikasiPegawai->save();
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiPegawai->id_user, $notifikasiPegawai->judul, $notifikasiPegawai->pesan);
 
         // Berikan respon sukses
         return redirect()->route('operator.prestasi')->with('success', 'Prestasi berhasil disetujui.');
@@ -192,6 +196,9 @@ class PrestasiController extends Controller
         $notifikasiPegawai->id_user = $prestasi->pegawai->user->id_user;
         $notifikasiPegawai->id_sender = auth()->user()->id_user;
         $notifikasiPegawai->save();
+
+        $notifikasiController = new NotifikasiController();
+        $notifikasiController->sendFCMNotification($notifikasiPegawai->id_user, $notifikasiPegawai->judul, $notifikasiPegawai->pesan);
 
         // Berikan respon sukses
         return redirect()->route('operator.prestasi')->with('success', 'Prestasi berhasil ditolak.');
